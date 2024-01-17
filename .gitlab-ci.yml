@@ -1,0 +1,35 @@
+trigger-development:
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "develop"'
+  trigger:
+    include:
+      - project: '${PROJECT_PROVISIONER_APPLICATION}'
+        file: '${GITLABCI_TRIGGER_FILE_DEV}'
+    strategy: depend
+ 
+trigger-staging:
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "staging"'
+  trigger:
+    include:
+      - project: '${PROJECT_PROVISIONER_APPLICATION}'
+        file: '${GITLABCI_TRIGGER_FILE_STG}'
+    strategy: depend
+
+trigger-homolog:
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "homolog"'
+  trigger:
+    include:
+      - project: '${PROJECT_PROVISIONER_APPLICATION}'
+        file: '${GITLABCI_TRIGGER_FILE_HML}'
+    strategy: depend
+
+trigger-production:
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+  trigger:
+    include:
+      - project: '${PROJECT_PROVISIONER_APPLICATION}'
+        file: '${GITLABCI_TRIGGER_FILE_PRD}'
+    strategy: depend
