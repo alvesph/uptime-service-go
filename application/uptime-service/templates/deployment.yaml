@@ -1,0 +1,22 @@
+# templates/argocd-app.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: {{ .Release.Name }}
+spec:
+  project: {{ .Values.project }}
+  source:
+    repoURL: {{ .Values.source.repoURL }}
+    path: {{ .Values.source.path }}
+    targetRevision: {{ .Values.source.targetRevision }}
+    helm:
+      {{- with .Values.source.helm.parameters }}
+      parameters: {{- toYaml . | nindent 6 }}
+      {{- end }}
+  destination:
+    server: {{ .Values.destination.server }}
+    namespace: {{ .Values.destination.namespace }}
+  syncPolicy:
+    automated:
+      prune: {{ .Values.syncPolicy.automated.prune }}
+      selfHeal: {{ .Values.syncPolicy.automated.selfHeal }}

@@ -1,0 +1,19 @@
+# values.yaml
+project: default
+source:
+  repoURL: 'repository'
+  path: default/charts/default
+  targetRevision: main
+  helm:
+    parameters:
+      - name: image.repository
+        value: image
+      - name: image.tag
+        value: tag
+destination:
+  server: 'cluster'
+  namespace: horizon-core
+syncPolicy:
+  automated:
+    prune: true
+    selfHeal: true
