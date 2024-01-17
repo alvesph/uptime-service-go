@@ -42,7 +42,7 @@ func main() {
 	// 	return
 	// }
 
-	file, err := os.Open(os.Getenv("LIST_URL")) // Substitua pelo caminho real do seu arquivo
+	file, err := os.Open(os.Getenv("/builds/Semantix/horizon/labs/uptime-service.tmp/LIST_URL")) // Substitua pelo caminho real do seu arquivo
 	if err != nil {
 		fmt.Println("Erro ao abrir o arquivo:", err)
 		return
