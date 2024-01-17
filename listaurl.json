@@ -1,0 +1,8 @@
+{
+  "urls": [
+    {"name": "Kong Proxy DEV", "url": "https://zionproxy-dev.horizoncore.io/comm/healthcheck"},
+    {"name": "Kong Manager DEV", "url": "http://a86aed955d77948d2af77874523ed637-281395534.us-east-1.elb.amazonaws.com:8002/default/services"},
+    {"name": "URL Inválida", "url": "http://url-invalida"},
+    {"name": "URL 400", "url": "https://httpstat.us/400"}
+  ]
+}

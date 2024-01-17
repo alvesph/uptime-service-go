@@ -35,10 +35,25 @@ func main() {
 		return
 	}
 
-	urlListJSON := os.Getenv("URL_LIST")
+	// urlListJSON := os.Getenv("URL_LIST")
+
+	// var urlList URLlist
+	// err = json.Unmarshal([]byte(urlListJSON), &urlList)
+	// if err != nil {
+	// 	fmt.Println("Erro ao decodificar a lista de URLs JSON:", err)
+	// 	return
+	// }
+
+	file, err := os.Open(os.Getenv("LIST_URL")) // Substitua pelo caminho real do seu arquivo
+	if err != nil {
+		fmt.Println("Erro ao abrir o arquivo:", err)
+		return
+	}
+	defer file.Close()
 
 	var urlList URLlist
-	err = json.Unmarshal([]byte(urlListJSON), &urlList)
+	decoder := json.NewDecoder(file)
+	err = decoder.Decode(&urlList)
 	if err != nil {
 		fmt.Println("Erro ao decodificar a lista de URLs JSON:", err)
 		return
