@@ -6,15 +6,13 @@ import (
 	"fmt"
 	"net/http"
 	"os"
-
-	"github.com/joho/godotenv"
 )
 
 func SendTeamsMessage(message string) error {
-	err := godotenv.Load()
-	if err != nil {
-		fmt.Println("Erro ao carregar o arquivo .env:", err)
-	}
+	// err := godotenv.Load()
+	// if err != nil {
+	// 	fmt.Println("Erro ao carregar o arquivo .env:", err)
+	// }
 
 	teamsWebhookURL := os.Getenv("TEAMS_WEBHOOK_URL")
 	if teamsWebhookURL == "" {
