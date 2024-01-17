@@ -8,8 +8,6 @@ import (
 	"strconv"
 	"time"
 	"uptimeService/teams"
-
-	"github.com/joho/godotenv"
 )
 
 type Service struct {
@@ -29,11 +27,11 @@ type StatusInfo struct {
 
 func main() {
 
-	err := godotenv.Load()
-	if err != nil {
-		fmt.Println("Erro ao carregar o arquivo .env:", err)
-		return
-	}
+	// err := godotenv.Load()
+	// if err != nil {
+	// 	fmt.Println("Erro ao carregar o arquivo .env:", err)
+	// 	return
+	// }
 
 	// urlListJSON := os.Getenv("URL_LIST")
 
