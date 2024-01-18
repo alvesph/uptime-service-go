@@ -26,7 +26,6 @@ type StatusInfo struct {
 }
 
 func main() {
-
 	file, err := os.Open("listaurl.json")
 	if err != nil {
 		fmt.Println("Erro ao abrir o arquivo:", err)
@@ -49,30 +48,44 @@ func main() {
 
 	for {
 		now := time.Now()
-		for _, service := range urlList.URLs {
-			get, err := http.Get(service.URL)
-			if err != nil {
-				fmt.Printf("Ocorreu um erro ao executar o serviço [%s] URL: [%s]\n", service.Name, service.URL)
-				continue
-			}
-			elapsed_time := time.Since(now).Seconds()
-			status := get.StatusCode
 
-			statusInfo := statusMap[service.URL]
-			if status != statusInfo.LastStatus {
-				message := fmt.Sprintf("Service: [%s] Status: [%d] Charging time: [%f]\n", service.Name, status, elapsed_time)
-				err = teams.SendTeamsMessage(message)
-				fmt.Println("Mensagem enviada com sucesso para o Teams!")
+		// Usar um canal para sincronizar goroutines
+		done := make(chan bool)
+
+		for _, service := range urlList.URLs {
+			go func(s Service) {
+				get, err := http.Get(s.URL)
 				if err != nil {
-					fmt.Printf("Erro ao enviar mensagem para o Teams: %v\n", err)
+					fmt.Printf("Ocorreu um erro ao executar o serviço [%s] URL: [%s]\n", s.Name, s.URL)
+					done <- true
 					return
 				}
 
-				statusInfo.LastStatus = status
-				statusInfo.LastSentTime = time.Now()
+				elapsedTime := time.Since(now).Seconds()
+				status := get.StatusCode
 
-			}
-			fmt.Printf("Service: [%s] Status: [%d] Charging time: [%f]\n", service.Name, status, elapsed_time)
+				statusInfo := statusMap[s.URL]
+				if status != statusInfo.LastStatus {
+					message := fmt.Sprintf("Service: [%s] Status: [%d] Charging time: [%f]\n", s.Name, status, elapsedTime)
+					err = teams.SendTeamsMessage(message)
+					fmt.Println("Mensagem enviada com sucesso para o Teams!")
+					if err != nil {
+						fmt.Printf("Erro ao enviar mensagem para o Teams: %v\n", err)
+						return
+					}
+
+					statusInfo.LastStatus = status
+					statusInfo.LastSentTime = time.Now()
+				}
+
+				fmt.Printf("Service: [%s] Status: [%d] Charging time: [%f]\n", s.Name, status, elapsedTime)
+				done <- true
+			}(service)
+		}
+
+		// Aguardar todas as goroutines concluírem
+		for range urlList.URLs {
+			<-done
 		}
 
 		sleepDurationStr := os.Getenv("RUNTIME")
@@ -83,5 +96,4 @@ func main() {
 		}
 		time.Sleep(time.Duration(sleepDuration) * time.Second)
 	}
-
 }
