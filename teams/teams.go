@@ -9,11 +9,6 @@ import (
 )
 
 func SendTeamsMessage(message string) error {
-	// err := godotenv.Load()
-	// if err != nil {
-	// 	fmt.Println("Erro ao carregar o arquivo .env:", err)
-	// }
-
 	teamsWebhookURL := os.Getenv("TEAMS_WEBHOOK_URL")
 	if teamsWebhookURL == "" {
 		return nil
@@ -37,7 +32,7 @@ func SendTeamsMessage(message string) error {
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		return fmt.Errorf("Erro ao enviar mensagem para o Teams. Código de status: %d", resp.StatusCode)
+		return fmt.Errorf("erro ao enviar mensagem para o Teams. Código de status: %d", resp.StatusCode)
 	}
 
 	return nil

@@ -1,23 +1,16 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"os"
 	"strconv"
 	"time"
+	"uptimeService/readfile"
 	"uptimeService/teams"
+
+	"github.com/joho/godotenv"
 )
-
-type Service struct {
-	Name string `json:"name"`
-	URL  string `json:"url"`
-}
-
-type URLlist struct {
-	URLs []Service `json:"urls"`
-}
 
 type StatusInfo struct {
 	URL          string
@@ -26,18 +19,16 @@ type StatusInfo struct {
 }
 
 func main() {
-	file, err := os.Open("listaurl.json")
+	err := godotenv.Load()
 	if err != nil {
-		fmt.Println("Erro ao abrir o arquivo:", err)
+		fmt.Println("Erro ao carregar o arquivo .env:", err)
 		return
 	}
-	defer file.Close()
 
-	var urlList URLlist
-	decoder := json.NewDecoder(file)
-	err = decoder.Decode(&urlList)
+	filePath := "listaurl.json"
+	urlList, err := readfile.ReadURLList(filePath)
 	if err != nil {
-		fmt.Println("Erro ao decodificar a lista de URLs JSON:", err)
+		fmt.Println("Erro ao carregar a lista de urls:", err)
 		return
 	}
 
@@ -49,11 +40,10 @@ func main() {
 	for {
 		now := time.Now()
 
-		// Usar um canal para sincronizar goroutines
 		done := make(chan bool)
 
 		for _, service := range urlList.URLs {
-			go func(s Service) {
+			go func(s readfile.Service) {
 				get, err := http.Get(s.URL)
 				if err != nil {
 					fmt.Printf("Ocorreu um erro ao executar o serviço [%s] URL: [%s]\n", s.Name, s.URL)
@@ -65,10 +55,11 @@ func main() {
 				status := get.StatusCode
 
 				statusInfo := statusMap[s.URL]
+				fmt.Println(statusInfo.LastStatus)
 				if status != statusInfo.LastStatus {
 					message := fmt.Sprintf("Service: [%s] Status: [%d] Charging time: [%f]\n", s.Name, status, elapsedTime)
-					err = teams.SendTeamsMessage(message)
 					fmt.Println("Mensagem enviada com sucesso para o Teams!")
+					err = teams.SendTeamsMessage(message)
 					if err != nil {
 						fmt.Printf("Erro ao enviar mensagem para o Teams: %v\n", err)
 						return
