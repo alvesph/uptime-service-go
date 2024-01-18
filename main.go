@@ -53,7 +53,6 @@ func main() {
 				status := get.StatusCode
 
 				statusInfo := statusMap[s.URL]
-				fmt.Println(statusInfo.LastStatus)
 				if status != statusInfo.LastStatus {
 					message := fmt.Sprintf("Service: [%s] Status: [%d] Charging time: [%f]\n", s.Name, status, elapsedTime)
 					fmt.Println("Mensagem enviada com sucesso para o Teams!")
