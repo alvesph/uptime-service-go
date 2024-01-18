@@ -42,7 +42,7 @@ func main() {
 	// 	return
 	// }
 
-	file, err := os.Open(os.Getenv("listaurl.json"))
+	file, err := os.Open("listaurl.json")
 	if err != nil {
 		fmt.Println("Erro ao abrir o arquivo:", err)
 		return
