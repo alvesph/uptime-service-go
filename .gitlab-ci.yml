@@ -4,7 +4,7 @@ trigger-development:
   trigger:
     include:
       - project: '${PROJECT_PROVISIONER_APPLICATION}'
-        file: '${GITLABCI_TRIGGER_FILE_DEV}'
+        file: 'horizon-charts-dev/.development_uptime.yml'
     strategy: depend
  
 trigger-staging:
@@ -13,7 +13,7 @@ trigger-staging:
   trigger:
     include:
       - project: '${PROJECT_PROVISIONER_APPLICATION}'
-        file: '${GITLABCI_TRIGGER_FILE_STG}'
+        file: 'horizon-charts-dev/.staging_uptime.yml'
     strategy: depend
 
 trigger-homolog:
@@ -22,7 +22,7 @@ trigger-homolog:
   trigger:
     include:
       - project: '${PROJECT_PROVISIONER_APPLICATION}'
-        file: '${GITLABCI_TRIGGER_FILE_HML}'
+        file: 'horizon-charts-dev/.homolog_uptime.yml'
     strategy: depend
 
 trigger-production:
@@ -31,5 +31,5 @@ trigger-production:
   trigger:
     include:
       - project: '${PROJECT_PROVISIONER_APPLICATION}'
-        file: '${GITLABCI_TRIGGER_FILE_PRD}'
+        file: 'horizon-charts-dev/.production_uptime.yml'
     strategy: depend
