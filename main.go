@@ -26,7 +26,7 @@ func main() {
 	filePath := "listaurl.json"
 	urlList, err := readfile.ReadURLList(filePath)
 	if err != nil {
-		fmt.Println("Erro ao carregar a lista de urls:", err)
+		fmt.Println(err)
 		return
 	}
 
@@ -71,7 +71,6 @@ func main() {
 			}(service)
 		}
 
-		// Aguardar todas as goroutines concluírem
 		for range urlList.URLs {
 			<-done
 		}
