@@ -27,21 +27,6 @@ type StatusInfo struct {
 
 func main() {
 
-	// err := godotenv.Load()
-	// if err != nil {
-	// 	fmt.Println("Erro ao carregar o arquivo .env:", err)
-	// 	return
-	// }
-
-	// urlListJSON := os.Getenv("URL_LIST")
-
-	// var urlList URLlist
-	// err = json.Unmarshal([]byte(urlListJSON), &urlList)
-	// if err != nil {
-	// 	fmt.Println("Erro ao decodificar a lista de URLs JSON:", err)
-	// 	return
-	// }
-
 	file, err := os.Open("listaurl.json")
 	if err != nil {
 		fmt.Println("Erro ao abrir o arquivo:", err)
