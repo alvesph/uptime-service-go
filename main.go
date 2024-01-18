@@ -8,8 +8,6 @@ import (
 	"time"
 	"uptimeService/readfile"
 	"uptimeService/teams"
-
-	"github.com/joho/godotenv"
 )
 
 type StatusInfo struct {
@@ -19,11 +17,11 @@ type StatusInfo struct {
 }
 
 func main() {
-	err := godotenv.Load()
-	if err != nil {
-		fmt.Println("Erro ao carregar o arquivo .env:", err)
-		return
-	}
+	// err := godotenv.Load()
+	// if err != nil {
+	// 	fmt.Println("Erro ao carregar o arquivo .env:", err)
+	// 	return
+	// }
 
 	filePath := "listaurl.json"
 	urlList, err := readfile.ReadURLList(filePath)
