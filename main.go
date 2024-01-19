@@ -72,8 +72,6 @@ func main() {
 		}
 
 		if len(services_error) > 0 {
-			fmt.Printf("teste [%s]\n", services_error)
-
 			fmt.Println("Mensagem enviada com sucesso para o Teams!")
 			err = teams.SendTeamsMessage(strings.Join(services_error, "\n"))
 			if err != nil {
