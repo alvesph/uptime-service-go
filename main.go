@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"os"
 	"strconv"
+	"strings"
 	"time"
 	"uptimeService/readfile"
 	"uptimeService/teams"
@@ -40,6 +41,7 @@ func main() {
 
 		done := make(chan bool)
 
+		var services_error []string
 		for _, service := range urlList.URLs {
 			go func(s readfile.Service) {
 				get, err := http.Get(s.URL)
@@ -55,13 +57,7 @@ func main() {
 				statusInfo := statusMap[s.URL]
 				if status != statusInfo.LastStatus {
 					message := fmt.Sprintf("Service: [%s] Status: [%d] Charging time: [%f]\n", s.Name, status, elapsedTime)
-					fmt.Println("Mensagem enviada com sucesso para o Teams!")
-					err = teams.SendTeamsMessage(message)
-					if err != nil {
-						fmt.Printf("Erro ao enviar mensagem para o Teams: %v\n", err)
-						return
-					}
-
+					services_error = append(services_error, message)
 					statusInfo.LastStatus = status
 					statusInfo.LastSentTime = time.Now()
 				}
@@ -73,6 +69,17 @@ func main() {
 
 		for range urlList.URLs {
 			<-done
+		}
+
+		if len(services_error) > 0 {
+			fmt.Printf("teste [%s]\n", services_error)
+
+			fmt.Println("Mensagem enviada com sucesso para o Teams!")
+			err = teams.SendTeamsMessage(strings.Join(services_error, "\n"))
+			if err != nil {
+				fmt.Printf("Erro ao enviar mensagem para o Teams: %v\n", err)
+				return
+			}
 		}
 
 		sleepDurationStr := os.Getenv("RUNTIME")
