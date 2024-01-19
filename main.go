@@ -61,7 +61,6 @@ func main() {
 					statusInfo.LastStatus = status
 					statusInfo.LastSentTime = time.Now()
 				}
-
 				fmt.Printf("Service: [%s] Status: [%d] Charging time: [%f]\n", s.Name, status, elapsedTime)
 				done <- true
 			}(service)
