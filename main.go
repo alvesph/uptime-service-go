@@ -31,6 +31,10 @@ func main() {
 		return
 	}
 
+	client := &http.Client{
+		Timeout: 10 * time.Second,
+	}
+
 	statusMap := make(map[string]*StatusInfo)
 	for _, service := range urlList.URLs {
 		statusMap[service.URL] = &StatusInfo{URL: service.URL, LastStatus: http.StatusOK, LastSentTime: time.Now()}
@@ -44,7 +48,14 @@ func main() {
 		var services_error []string
 		for _, service := range urlList.URLs {
 			go func(s readfile.Service) {
-				get, err := http.Get(s.URL)
+				req, err := http.NewRequest("GET", s.URL, nil)
+				if err != nil {
+					fmt.Printf("Erro ao criar a requisição para o serviço [%s] URL: [%s]\n", s.Name, s.URL)
+					done <- true
+					return
+				}
+
+				get, err := client.Do(req)
 				if err != nil {
 					fmt.Printf("Ocorreu um erro ao executar o serviço [%s] URL: [%s]\n", s.Name, s.URL)
 					done <- true
