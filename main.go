@@ -54,7 +54,6 @@ func main() {
 					done <- true
 					return
 				}
-
 				get, err := client.Do(req)
 				if err != nil {
 					fmt.Printf("Ocorreu um erro ao executar o serviço [%s] URL: [%s]\n", s.Name, s.URL)
