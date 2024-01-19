@@ -76,7 +76,6 @@ func main() {
 				done <- true
 			}(service)
 		}
-
 		for range urlList.URLs {
 			<-done
 		}
