@@ -1,15 +1,23 @@
 FROM golang:1.21-alpine AS base
 
-ENV DEBIAN_FRONTEND=noninterative
+WORKDIR /app
 
-ARG UID=1000
-ARG DIR=/app
+RUN mkdir -p /app/.cache && chown -R nobody:nogroup /app/.cache
 
-FROM base AS current
-WORKDIR ${DIR}
+COPY go.mod go.sum ./
 
-COPY . ./
 RUN go mod download
-RUN go build -o /main
 
+COPY . .
+
+RUN CGO_ENABLED=0 GOOS=linux go build -o /main
+
+FROM alpine:latest AS current
+
+USER nobody:nogroup
+
+COPY --from=base /main /main
+
+WORKDIR /app
 CMD ["/main"]
+
