@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: uptime-service-api
+spec:
+  selector:
+    matchLabels:
+      app: uptime-service-api
+  template:
+    metadata:
+      labels:
+        app: uptime-service-api
+    spec:
+      containers:
+      - name: uptime-service-api
+        image: recrutaz/uptime-service-api:latest
+        ports:
+        - containerPort: 80
