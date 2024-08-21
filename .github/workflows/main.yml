@@ -14,3 +14,8 @@ jobs:
         run: |
           echo "You created your first workflow !!"
           echo "Congratulations!"
+      - name: "My python action"
+        run: |
+          x = "My script python"
+          print(x)
+        shell: python
