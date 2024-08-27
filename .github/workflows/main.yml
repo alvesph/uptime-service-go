@@ -14,3 +14,13 @@ jobs:
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
+    - name: Build and push my image
+      uses: docker/build-push-action@v6.7.0
+      with:
+        context: .
+        file: ./Dockerfile
+        target: current 
+        push: true
+        tags: |
+          recrutaz/uptime-service-go:v${{ github.run_number }}
+          recrutaz/uptime-service-go:latest
