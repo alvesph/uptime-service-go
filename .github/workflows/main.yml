@@ -24,3 +24,9 @@ jobs:
         tags: |
           recrutaz/uptime-service-go:v${{ github.run_number }}
           recrutaz/uptime-service-go:latest
+  CD:
+    runs-on:  ubuntu-latest
+    needs: [CI]
+    steps:
+    - name: Checking code
+      uses: actions/checkout@v4.1.7
