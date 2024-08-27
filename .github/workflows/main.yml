@@ -19,3 +19,15 @@ jobs:
           x = "My script python"
           print(x)
         shell: python
+  second-job:
+    name: "My second job"
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Check node verison"
+        run: node --version
+      - name: "Use marketplace actions"
+        uses: actions/setup-node@v4.0.3
+        with:
+         node-version: '22.7.0'
+      - name: "Check node verison"
+        run: node --version
